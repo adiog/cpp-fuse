@@ -1,0 +1,31 @@
+// This file is a part of qsfuse project.
+// Copyright (c) 2016 Aleksander Gajewski <adiog@brainfuck.pl>.
+
+#ifndef QSFUSE_DEBUG_H
+#define QSFUSE_DEBUG_H
+
+#include <iostream>
+#include <string>
+#include <regex>
+
+std::string filename(const char *path) {
+    static const std::string empty("");
+    std::string string_path(path);
+    const std::regex forbid(".*\\/");
+    return std::regex_replace(path, forbid, empty);
+}
+
+#ifndef DEBUG
+#define DEBUG(text)                                                       \
+    std::cerr << "\t" << __PRETTY_FUNCTION__ << " :: " << filename(__FILE__) << ":" \
+              << __LINE__ << " :: " << text << std::endl
+#endif
+
+#ifndef DEBUG_THREAD
+#define DEBUG_THREAD(text)                                                  \
+    std::cerr << "\t" << std::this_thread::get_id()                         \
+              << " :: " << __PRETTY_FUNCTION__ << " :: " << filename(__FILE__) << ":" \
+              << __LINE__ << " :: " << text << std::endl
+#endif
+
+#endif  // QSFUSE_DEBUG_H

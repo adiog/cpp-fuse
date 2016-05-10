@@ -1,0 +1,22 @@
+// This file is a part of qsfuse project.
+// Copyright (c) 2016 Aleksander Gajewski <adiog@brainfuck.pl>.
+
+#ifndef QSFUSE_THROW_H
+#define QSFUSE_THROW_H
+
+#include <stdexcept>
+
+#define MACRO_TRICK_S1(x) #x
+#define MACRO_TRICK_S2(x) MACRO_TRICK_S1(x)
+
+#ifndef LOCATION
+#define LOCATION                                                              \
+    std::string(__PRETTY_FUNCTION__) + " :: " + std::string(__FILE__) + ":" + \
+        std::string(MACRO_TRICK_S2(__LINE__))
+#endif
+
+#ifndef THROW
+#define THROW() throw(std::runtime_error(LOCATION))
+#endif
+
+#endif  // QSFUSE_THROW_H
